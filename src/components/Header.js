@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import HeartActive from "../assets/icon/heartActive.svg";
 
-function Header() {
+function Header({ setSearch }) {
   const navigation = useHistory();
   return (
     <div className="w-full h-36 flex justify-between items-center bg-black px-36">
@@ -13,7 +13,10 @@ function Header() {
         Image Share
       </h1>
       <div className="flex">
-        <input className="w-48 h-8 rounded-md" />
+        <input
+          className="w-48 h-8 rounded-md"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <div
           className="ml-4 flex items-center"
           onClick={() => navigation.push("/favorite")}

@@ -1,10 +1,12 @@
-import axios from "axios";
-import { useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Header, ImageCard } from "../components";
 import { AppContext } from "../context/appContext";
 
 function Homepage() {
   const [isLoading, data, setData] = useContext(AppContext);
+  const [item, setItem] = useState([]);
+
+  const [search, setSearch] = useState("");
 
   const onFavorite = (id) => {
     const findData = data.find((item) => item.id === id);
@@ -16,9 +18,18 @@ function Homepage() {
     setData(newData);
   };
 
+  useEffect(() => {
+    if (!search === "") {
+      setItem(data);
+    } else {
+      setItem(data.filter((item) => item.title.toLowerCase().includes(search)));
+    }
+  }, [search]);
+  console.log(search);
+
   return (
     <div className="w-screen h-screen relative">
-      <Header />
+      <Header setSearch={setSearch} />
       <div className="w-8/12 m-auto flex flex-wrap justify-between">
         {isLoading ? (
           <div className="w-full h-full">
@@ -30,7 +41,7 @@ function Homepage() {
           </div>
         ) : (
           <>
-            {data.map((data) => (
+            {item.map((data) => (
               <ImageCard data={data} onFavorite={onFavorite} />
             ))}
           </>
